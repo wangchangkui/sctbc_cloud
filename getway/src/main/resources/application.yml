@@ -14,7 +14,7 @@ spring:
           enabled: true
       routes:
         - id: nacos-student
-          uri: http://localhost:9521/student
+          uri: lb://nacos-student
           predicates:
             - Path=/student/**
     nacos:

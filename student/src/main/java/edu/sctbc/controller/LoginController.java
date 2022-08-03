@@ -17,11 +17,6 @@ public class LoginController {
 
     @GetMapping("/test")
     public ResponseResult<String> test(){
-        try {
-            Thread.sleep(6000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
         return ResponseResult.success("success");
     }
 }
