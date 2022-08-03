@@ -1,0 +1,9 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: nacos-getaway-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
