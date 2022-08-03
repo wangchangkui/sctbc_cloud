@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
  * @createTime 2022年08月03日 15:33:00
  */
 
+@Configuration
 public class LoadBalance {
 
 

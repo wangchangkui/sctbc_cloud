@@ -1,5 +1,10 @@
 server:
   port: 9001
+
+auth:
+  noAuthor:
+    - /login
+
 spring:
   application:
     name: nacos-getaway
@@ -12,11 +17,7 @@ spring:
       discovery:
         locator:
           enabled: true
-      routes:
-        - id: nacos-student
-          uri: lb://nacos-student
-          predicates:
-            - Path=/student/**
+
     nacos:
       discovery:
         server-addr: localhost:8848
