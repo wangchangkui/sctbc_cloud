@@ -5,9 +5,18 @@ spring:
     name: nacos-getaway
   cloud:
     gateway:
+      httpclient:
+        # 如果5秒没有请求或者响应超过5秒
+        connect-timeout: 5000
+        response-timeout: 5000
       discovery:
         locator:
           enabled: true
+      routes:
+        - id: nacos-student
+          uri: http://localhost:9521/student
+          predicates:
+            - Path=/student/**
     nacos:
       discovery:
         server-addr: localhost:8848

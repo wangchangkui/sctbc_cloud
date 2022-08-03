@@ -1,10 +1,9 @@
-server:
-  port: 9521
 spring:
   profiles:
     active: dev
   application:
     name: nacos-student
+
   cloud:
     nacos:
       discovery:
