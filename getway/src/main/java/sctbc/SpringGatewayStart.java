@@ -12,8 +12,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
-public class SpringGetawayStart {
+public class SpringGatewayStart {
     public static void main(String[] args) {
-        SpringApplication.run(SpringGetawayStart.class,args);
+        SpringApplication.run(SpringGatewayStart.class,args);
     }
 }
