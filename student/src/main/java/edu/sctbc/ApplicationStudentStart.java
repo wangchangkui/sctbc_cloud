@@ -3,6 +3,7 @@ package edu.sctbc;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @author wck
@@ -12,6 +13,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  */
 @SpringBootApplication
 @EnableDiscoveryClient
+@ComponentScan({"edu.sctbc.*"})
 public class ApplicationStudentStart {
     public static void main(String[] args) {
         SpringApplication.run(ApplicationStudentStart.class,args);

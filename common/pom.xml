@@ -15,9 +15,16 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <fastjson>2.0.7</fastjson>
+        <bcprov>1.71</bcprov>
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15to18</artifactId>
+            <version>${bcprov}</version>
+        </dependency>
 
         <dependency>
             <groupId>redis.clients</groupId>

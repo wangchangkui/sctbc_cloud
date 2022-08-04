@@ -1,4 +1,4 @@
-package org.util.redis;
+package edu.sctbc.util.redis;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -8,7 +8,7 @@ import redis.clients.jedis.JedisPoolConfig;
 /**
  * @author wck
  * @version 1.0.0
- * @Description TODO
+ * @Description
  * @createTime 2022年01月18日 16:43:00
  */
 @Component
