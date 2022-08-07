@@ -1,7 +1,10 @@
 package edu.sctbc.pojo.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import edu.sctbc.pojo.Student;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -12,6 +15,8 @@ import java.time.LocalDateTime;
  * @Description
  * @createTime 2022年08月03日 17:41:00
  */
+@AllArgsConstructor
+@NoArgsConstructor
 
 public class StudentDto extends Student {
 
@@ -34,5 +39,11 @@ public class StudentDto extends Student {
      */
     @Getter
     @Setter
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String code;
+
+
+    public StudentDto(Student student){
+        super(student.getId(),student.getName(),student.getStudentId(),student.getSex(),student.getPhone(),student.getBirthday(),student.getGraduationSchool(),student.getHome(),student.getParentNumber(),student.getParentName(),student.getEmail(),student.getWx(),student.getQq());
+    }
 }

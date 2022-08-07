@@ -33,4 +33,11 @@ public interface StudentService extends IService<Student> {
      * @return url
      */
     String verify();
+
+    /**
+     * 根据微信的id来登录用户
+     * @param wxId 微信Id
+     * @return StudentDto
+     */
+    StudentDto wxLogin(String wxId);
 }

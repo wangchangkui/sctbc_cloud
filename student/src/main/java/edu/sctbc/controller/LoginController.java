@@ -20,6 +20,12 @@ public class LoginController {
     private StudentService studentService;
 
 
+    @GetMapping("/wxLogin/{wxId}")
+    public ResponseResult<StudentDto> wxLogin(@PathVariable String wxId){
+        return ResponseResult.success(studentService.wxLogin(wxId));
+    }
+
+
     @PostMapping("/login")
     public ResponseResult<StudentDto> login(@RequestBody StudentDto student) throws IllegalAccessException {
         return ResponseResult.success(studentService.login(student));

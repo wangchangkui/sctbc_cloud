@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 /**
  * @author wck
  * @version 1.0.0
@@ -16,6 +18,26 @@ import lombok.Data;
 @Data
 @TableName("student")
 public class Student {
+
+
+    public Student() {
+    }
+
+    public Student(Long id, String name, String studentId, Integer sex, String phone, LocalDateTime birthday, String graduationSchool, String home, String parentNumber, String parentName, String email, String wx, String qq) {
+        this.id = id;
+        this.name = name;
+        this.studentId = studentId;
+        this.sex = sex;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.graduationSchool = graduationSchool;
+        this.home = home;
+        this.parentNumber = parentNumber;
+        this.parentName = parentName;
+        this.email = email;
+        this.wx = wx;
+        this.qq = qq;
+    }
 
     @TableId(value = "id",type = IdType.AUTO)
     private Long id;
@@ -37,7 +59,7 @@ public class Student {
     private String phone;
 
     @TableField("birthday")
-    private String birthday;
+    private LocalDateTime birthday;
 
     @TableField("graduation_school")
     private String graduationSchool;

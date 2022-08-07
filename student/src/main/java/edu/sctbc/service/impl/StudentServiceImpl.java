@@ -2,27 +2,23 @@ package edu.sctbc.service.impl;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
-import cn.hutool.core.util.ObjectUtil;
-import com.alibaba.fastjson.JSON;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.sctbc.config.RsaKey;
 import edu.sctbc.dao.StudentMapper;
 import edu.sctbc.pojo.Student;
 import edu.sctbc.pojo.dto.StudentDto;
 import edu.sctbc.service.StudentService;
+import edu.sctbc.service.login.abstracts.impl.TextLogin;
+import edu.sctbc.service.login.abstracts.impl.WxLogin;
 import edu.sctbc.util.redis.RedisCommonKey;
-import edu.sctbc.util.redis.TokenUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import edu.sctbc.util.Encoder;
 import edu.sctbc.util.redis.RedisPool;
 import redis.clients.jedis.Jedis;
 
 
 import java.awt.*;
-import java.time.LocalDateTime;
 
 import static edu.sctbc.util.redis.RedisCommonKey.THREE_MINUTES;
 
@@ -42,6 +38,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Autowired
     private RedisPool redisPool;
 
+    @Autowired
+    private StudentMapper studentMapper;
+
     @Override
     public String verify() {
         LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(100, 30,4,3);
@@ -49,6 +48,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         Jedis jedis=redisPool.getConnection();
         RedisCommonKey.setValues(RedisCommonKey.CAPTCHA+lineCaptcha.getCode(),lineCaptcha.getCode(),THREE_MINUTES,false,jedis);
         return "data:image/png;base64,"+lineCaptcha.getImageBase64();
+    }
+
+    @Override
+    public StudentDto wxLogin(String wxId) {
+        WxLogin wxLogin = new WxLogin(redisPool, studentMapper, wxId);
+        return wxLogin.login();
     }
 
 
@@ -73,43 +78,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         if(checkCode(student.getCode())){
             throw new RuntimeException("验证码不存在");
         }
-        // 密码加密
-        String password = student.getPassword();
-        String encoderPassword = Encoder.encoder(password, rsaKey.getKey(), rsaKey.getIv());
-        LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Student::getStudentId,student.getStudentId()).eq(Student::getPassword,encoderPassword);
-        Student res = getOne(wrapper);
-        // 生成token
-        if(ObjectUtil.isNull(res)){
-            throw new RuntimeException("没有该学生");
-        }
-        try(Jedis jedis=redisPool.getConnection()){
-            StudentDto studentDto =  new StudentDto();
-            // 判断数据库该用户是否登录 直接获取token
-            String temp = jedis.get(RedisCommonKey.USER_ + res.getName());
-            if(StringUtils.isNotBlank(temp)){
-                jedis.del(RedisCommonKey.USER_+res.getName());
-                jedis.del(RedisCommonKey.TOKEN_+temp);
-            }
-            // 存入新token
-            String tokenPre = JSON.toJSONString(res);
-            String token = TokenUtil.getToken(tokenPre);
-            jedis.set(RedisCommonKey.TOKEN_+token,tokenPre,RedisCommonKey.getAnyParam(RedisCommonKey.EXPIRE_ONE_DAY,false));
-            // 多设置一个 可以快速删除
-            jedis.set(RedisCommonKey.USER_+res.getName(),token,RedisCommonKey.getAnyParam(RedisCommonKey.EXPIRE_ONE_DAY,false));
-            studentDto.setToken(token);
-            studentDto.setExpire(LocalDateTime.now().plusDays(1));
-            return studentDto;
-        }catch (Exception e){
-            e.printStackTrace();
-            throw new RuntimeException(e.getMessage());
-        }
+        TextLogin textLogin = new TextLogin(rsaKey, redisPool, student, studentMapper);
+        return textLogin.login();
     }
 
 
     public boolean verifyUser(Student student){
         return !StringUtils.isBlank(student.getPassword()) && !StringUtils.isBlank(student.getStudentId());
     }
+
 
 
 }
