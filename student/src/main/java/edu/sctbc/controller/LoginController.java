@@ -4,10 +4,7 @@ import edu.sctbc.pojo.Student;
 import edu.sctbc.pojo.dto.StudentDto;
 import edu.sctbc.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import edu.sctbc.util.ResponseResult;
 
 /**
@@ -25,8 +22,13 @@ public class LoginController {
 
 
     @PostMapping("/login")
-    public ResponseResult<StudentDto> login(@RequestBody Student student){
+    public ResponseResult<StudentDto> login(@RequestBody StudentDto student) throws IllegalAccessException {
         return ResponseResult.success(studentService.login(student));
+    }
+
+    @GetMapping("/verify")
+    public ResponseResult<String>verifyCode(){
+        return ResponseResult.success(studentService.verify());
     }
 
 

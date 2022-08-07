@@ -15,11 +15,24 @@ import java.time.LocalDateTime;
 
 public class StudentDto extends Student {
 
+    /**
+     * token
+     */
     @Getter
     @Setter
     private String token;
 
+    /**
+     * token过期时间
+     */
     @Getter
     @Setter
     private LocalDateTime expire;
+
+    /**
+     * 携带验证码
+     */
+    @Getter
+    @Setter
+    private String code;
 }

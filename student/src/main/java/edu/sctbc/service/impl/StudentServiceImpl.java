@@ -1,5 +1,7 @@
 package edu.sctbc.service.impl;
 
+import cn.hutool.captcha.CaptchaUtil;
+import cn.hutool.captcha.LineCaptcha;
 import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -17,9 +19,12 @@ import org.springframework.stereotype.Service;
 import edu.sctbc.util.Encoder;
 import edu.sctbc.util.redis.RedisPool;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.params.SetParams;
 
+
+import java.awt.*;
 import java.time.LocalDateTime;
+
+import static edu.sctbc.util.redis.RedisCommonKey.THREE_MINUTES;
 
 /**
  * @author wck
@@ -38,7 +43,33 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     private RedisPool redisPool;
 
     @Override
-    public StudentDto login(Student student) {
+    public String verify() {
+        LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(100, 30,4,3);
+        lineCaptcha.setBackground(new Color(245,247,250));
+        Jedis jedis=redisPool.getConnection();
+        RedisCommonKey.setValues(RedisCommonKey.CAPTCHA+lineCaptcha.getCode(),lineCaptcha.getCode(),THREE_MINUTES,false,jedis);
+        return "data:image/png;base64,"+lineCaptcha.getImageBase64();
+    }
+
+
+    @Override
+    public boolean checkCode(String code) {
+        try( Jedis jedis=redisPool.getConnection()){
+            if(StringUtils.isNotBlank(jedis.get(RedisCommonKey.CAPTCHA + code))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public StudentDto login(StudentDto student) throws IllegalAccessException {
+        if(!verifyUser(student)){
+            throw new IllegalAccessException("请检查参数的完整性");
+        }
+        if(checkCode(student.getCode())){
+            throw new RuntimeException("验证码不存在");
+        }
         // 密码加密
         String password = student.getPassword();
         String encoderPassword = Encoder.encoder(password, rsaKey.getKey(), rsaKey.getIv());
@@ -60,11 +91,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
             // 存入新token
             String tokenPre = JSON.toJSONString(res);
             String token = TokenUtil.getToken(tokenPre);
-            SetParams setParams = new SetParams();
-            setParams.ex(RedisCommonKey.EXPIRE_ONE_DAY);
-            jedis.set(RedisCommonKey.TOKEN_+token,tokenPre,setParams);
+            jedis.set(RedisCommonKey.TOKEN_+token,tokenPre,RedisCommonKey.getAnyParam(RedisCommonKey.EXPIRE_ONE_DAY,false));
             // 多设置一个 可以快速删除
-            jedis.set(RedisCommonKey.USER_+res.getName(),token,setParams);
+            jedis.set(RedisCommonKey.USER_+res.getName(),token,RedisCommonKey.getAnyParam(RedisCommonKey.EXPIRE_ONE_DAY,false));
             studentDto.setToken(token);
             studentDto.setExpire(LocalDateTime.now().plusDays(1));
             return studentDto;
@@ -73,4 +102,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
             throw new RuntimeException(e.getMessage());
         }
     }
+
+
+    public boolean verifyUser(Student student){
+        return !StringUtils.isBlank(student.getPassword()) && !StringUtils.isBlank(student.getStudentId());
+    }
+
+
 }
