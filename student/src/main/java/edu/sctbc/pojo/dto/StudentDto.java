@@ -44,6 +44,6 @@ public class StudentDto extends Student {
 
 
     public StudentDto(Student student){
-        super(student.getId(),student.getName(),student.getStudentId(),student.getSex(),student.getPhone(),student.getBirthday(),student.getGraduationSchool(),student.getHome(),student.getParentNumber(),student.getParentName(),student.getEmail(),student.getWx(),student.getQq());
+        super(student.getId(),student.getName(),student.getStudentId(),student.getSex(),student.getPhone(),student.getBirthday(),student.getGraduationSchool(),student.getHome(),student.getParentNumber(),student.getParentName(),student.getEmail(),student.getWxId(),student.getWxName(),student.getQq());
     }
 }

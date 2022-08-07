@@ -23,7 +23,7 @@ public class Student {
     public Student() {
     }
 
-    public Student(Long id, String name, String studentId, Integer sex, String phone, LocalDateTime birthday, String graduationSchool, String home, String parentNumber, String parentName, String email, String wx, String qq) {
+    public Student(Long id, String name, String studentId, Integer sex, String phone, LocalDateTime birthday, String graduationSchool, String home, String parentNumber, String parentName, String email, String wxId,String wxName, String qq) {
         this.id = id;
         this.name = name;
         this.studentId = studentId;
@@ -35,8 +35,9 @@ public class Student {
         this.parentNumber = parentNumber;
         this.parentName = parentName;
         this.email = email;
-        this.wx = wx;
+        this.wxId = wxId;
         this.qq = qq;
+        this.wxName = wxName;
     }
 
     @TableId(value = "id",type = IdType.AUTO)
@@ -76,8 +77,11 @@ public class Student {
     @TableField("email")
     private String email;
 
-    @TableField("wx")
-    private String wx;
+    @TableField("wx_id")
+    private String wxId;
+
+    @TableField("wx_code")
+    private String wxName;
 
     @TableField("qq")
     private String qq;

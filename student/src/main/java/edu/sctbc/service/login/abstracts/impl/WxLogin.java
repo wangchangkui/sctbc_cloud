@@ -38,7 +38,7 @@ public class WxLogin extends AbstractLogin {
     @Override
     public Student preLoginUser() {
         LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(Student::getWx,wxId);
+        wrapper.eq(Student::getWxId,wxId);
         return studentMapper.selectOne(wrapper);
     }
 
