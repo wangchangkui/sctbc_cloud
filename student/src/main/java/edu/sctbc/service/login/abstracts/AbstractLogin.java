@@ -36,10 +36,13 @@ public abstract class AbstractLogin implements LoginInterFace {
     }
 
 
+    /**
+     * 该方法保证 微信和账号登录 都只能生成1个token
+     * @param res 数据库查询对象
+     * @param redisPool redis
+     * @return 返回登录结果
+     */
     public StudentDto afterLogin(Student res, RedisPool redisPool){
-        if(ObjectUtil.isNull(res)){
-            throw new RuntimeException("该用户不存在");
-        }
         try(Jedis jedis=redisPool.getConnection()){
             StudentDto studentDto =  new StudentDto(res);
             // 判断数据库该用户是否登录 直接获取token

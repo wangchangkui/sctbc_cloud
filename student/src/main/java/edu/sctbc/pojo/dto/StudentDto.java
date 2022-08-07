@@ -48,7 +48,4 @@ public class StudentDto extends Student {
     }
 
 
-    public Student getsStudent(){
-        return new Student(this.getId(),this.getWxAvatar(),this.getWxName());
-    }
 }

@@ -2,8 +2,10 @@ package edu.sctbc.service.impl;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.sctbc.config.RsaKey;
+import edu.sctbc.config.WxProperties;
 import edu.sctbc.dao.StudentMapper;
 import edu.sctbc.pojo.Student;
 import edu.sctbc.pojo.dto.StudentDto;
@@ -12,6 +14,7 @@ import edu.sctbc.service.StudentService;
 import edu.sctbc.service.login.abstracts.impl.TextLogin;
 import edu.sctbc.service.login.abstracts.impl.WxLogin;
 import edu.sctbc.util.redis.RedisCommonKey;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +34,7 @@ import static edu.sctbc.util.redis.RedisCommonKey.THREE_MINUTES;
  */
 
 @Service
+@Slf4j
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
 
 
@@ -43,6 +47,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Autowired
     private StudentMapper studentMapper;
 
+    @Autowired
+    private WxProperties wxProperties;
+
     @Override
     public String verify() {
         LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(100, 30,4,3);
@@ -53,12 +60,22 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public StudentDto wxLogin(WxLoginEntity wx) {
-        WxLogin wxLogin = new WxLogin(redisPool, studentMapper, wx.getWxId());
+    public StudentDto wxLogin(WxLoginEntity entity) {
+        // 远程调用微信服务器 获取openId
+        String wxIdFormRemote = WxLogin.getWxIdFormRemote(entity.getWxId(),wxProperties.getAppId(),wxProperties.getSecret(),wxProperties.getGrantType());
+        WxLogin wxLogin = new WxLogin(redisPool, studentMapper, wxIdFormRemote);
         StudentDto login = wxLogin.login();
+        login.setWxId(wxIdFormRemote);
+        login.setWxName(entity.getWxName());
+        login.setWxAvatar(entity.getWxAvatar());
         // 更新微信头像
-        Student student = login.getsStudent();
-        studentMapper.updateById(student);
+        try{
+            log.info("更新用户头像已经微信信息");
+            studentMapper.update(login,new LambdaQueryWrapper<Student>().eq(Student::getId,login.getId()));
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
         return login;
     }
 

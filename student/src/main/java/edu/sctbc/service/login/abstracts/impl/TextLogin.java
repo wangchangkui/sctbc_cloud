@@ -1,5 +1,6 @@
 package edu.sctbc.service.login.abstracts.impl;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import edu.sctbc.config.RsaKey;
 import edu.sctbc.dao.StudentMapper;
@@ -49,7 +50,11 @@ public class TextLogin extends AbstractLogin {
         String encoderPassword = Encoder.encoder(password, rsaKey.getKey(), rsaKey.getIv());
         LambdaQueryWrapper<Student> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(Student::getStudentId,student.getStudentId()).eq(Student::getPassword,encoderPassword);
-        return studentMapper.selectOne(wrapper);
+        Student res = studentMapper.selectOne(wrapper);
+        if(ObjectUtil.isNull(res)){
+            throw new RuntimeException("该用户不存在");
+        }
+        return res;
     }
 
     @Override

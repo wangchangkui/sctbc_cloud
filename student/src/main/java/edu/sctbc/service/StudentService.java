@@ -37,8 +37,8 @@ public interface StudentService extends IService<Student> {
 
     /**
      * 根据微信的id来登录用户
-     * @param wx 微信
+     * @param entity 微信临时token
      * @return StudentDto
      */
-    StudentDto wxLogin(WxLoginEntity wx);
+    StudentDto wxLogin(WxLoginEntity entity);
 }

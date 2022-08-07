@@ -84,6 +84,7 @@ public class Student {
     @TableField("email")
     private String email;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @TableField("wx_id")
     private String wxId;
 

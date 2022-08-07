@@ -3,6 +3,7 @@ package edu.sctbc.controller;
 import edu.sctbc.pojo.dto.StudentDto;
 import edu.sctbc.pojo.reqentity.WxLoginEntity;
 import edu.sctbc.service.StudentService;
+import edu.sctbc.service.login.abstracts.impl.WxLogin;
 import edu.sctbc.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +22,12 @@ public class LoginController {
     private StudentService studentService;
 
 
+
     @PostMapping("/wxLogin")
-    public ResponseResult<StudentDto> wxLogin(@RequestBody WxLoginEntity wx){
-        return ResponseResult.success(studentService.wxLogin(wx));
+    public ResponseResult<StudentDto> getWxId(@RequestBody WxLoginEntity wxLogin){
+        return ResponseResult.success(studentService.wxLogin(wxLogin));
     }
+
 
 
     @PostMapping("/login")
