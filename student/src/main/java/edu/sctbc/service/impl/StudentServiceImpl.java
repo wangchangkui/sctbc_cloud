@@ -56,8 +56,11 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     public boolean checkCode(String code) {
         try( Jedis jedis=redisPool.getConnection()){
             if(StringUtils.isNotBlank(jedis.get(RedisCommonKey.CAPTCHA + code))){
+                jedis.del(RedisCommonKey.CAPTCHA+code);
                 return false;
             }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return true;
     }

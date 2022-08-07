@@ -1,11 +1,10 @@
 package edu.sctbc.controller;
 
-import edu.sctbc.pojo.Student;
 import edu.sctbc.pojo.dto.StudentDto;
 import edu.sctbc.service.StudentService;
+import edu.sctbc.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import edu.sctbc.util.ResponseResult;
 
 /**
  * @author wck
