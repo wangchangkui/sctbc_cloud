@@ -7,6 +7,7 @@ import edu.sctbc.config.RsaKey;
 import edu.sctbc.dao.StudentMapper;
 import edu.sctbc.pojo.Student;
 import edu.sctbc.pojo.dto.StudentDto;
+import edu.sctbc.pojo.reqentity.WxLoginEntity;
 import edu.sctbc.service.StudentService;
 import edu.sctbc.service.login.abstracts.impl.TextLogin;
 import edu.sctbc.service.login.abstracts.impl.WxLogin;
@@ -28,6 +29,7 @@ import static edu.sctbc.util.redis.RedisCommonKey.THREE_MINUTES;
  * @Description
  * @createTime 2022年08月03日 17:35:00
  */
+
 @Service
 public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> implements StudentService {
 
@@ -51,9 +53,13 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     }
 
     @Override
-    public StudentDto wxLogin(String wxId) {
-        WxLogin wxLogin = new WxLogin(redisPool, studentMapper, wxId);
-        return wxLogin.login();
+    public StudentDto wxLogin(WxLoginEntity wx) {
+        WxLogin wxLogin = new WxLogin(redisPool, studentMapper, wx.getWxId());
+        StudentDto login = wxLogin.login();
+        // 更新微信头像
+        Student student = login.getsStudent();
+        studentMapper.updateById(student);
+        return login;
     }
 
 

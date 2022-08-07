@@ -1,6 +1,7 @@
 package edu.sctbc.controller;
 
 import edu.sctbc.pojo.dto.StudentDto;
+import edu.sctbc.pojo.reqentity.WxLoginEntity;
 import edu.sctbc.service.StudentService;
 import edu.sctbc.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +21,9 @@ public class LoginController {
     private StudentService studentService;
 
 
-    @GetMapping("/wxLogin/{wxId}")
-    public ResponseResult<StudentDto> wxLogin(@PathVariable String wxId){
-        return ResponseResult.success(studentService.wxLogin(wxId));
+    @PostMapping("/wxLogin")
+    public ResponseResult<StudentDto> wxLogin(@RequestBody WxLoginEntity wx){
+        return ResponseResult.success(studentService.wxLogin(wx));
     }
 
 

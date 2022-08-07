@@ -44,6 +44,11 @@ public class StudentDto extends Student {
 
 
     public StudentDto(Student student){
-        super(student.getId(),student.getName(),student.getStudentId(),student.getSex(),student.getPhone(),student.getBirthday(),student.getGraduationSchool(),student.getHome(),student.getParentNumber(),student.getParentName(),student.getEmail(),student.getWxId(),student.getWxName(),student.getQq());
+        super(student.getId(),student.getName(),student.getStudentId(),student.getSex(),student.getPhone(),student.getBirthday(),student.getGraduationSchool(),student.getHome(),student.getParentNumber(),student.getParentName(),student.getEmail(),student.getWxId(),student.getWxName(),student.getWxAvatar(),student.getQq());
+    }
+
+
+    public Student getsStudent(){
+        return new Student(this.getId(),this.getWxAvatar(),this.getWxName());
     }
 }

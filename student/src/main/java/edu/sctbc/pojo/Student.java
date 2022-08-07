@@ -23,7 +23,7 @@ public class Student {
     public Student() {
     }
 
-    public Student(Long id, String name, String studentId, Integer sex, String phone, LocalDateTime birthday, String graduationSchool, String home, String parentNumber, String parentName, String email, String wxId,String wxName, String qq) {
+    public Student(Long id, String name, String studentId, Integer sex, String phone, LocalDateTime birthday, String graduationSchool, String home, String parentNumber, String parentName, String email, String wxId,String wxName,String wxAvatar, String qq) {
         this.id = id;
         this.name = name;
         this.studentId = studentId;
@@ -38,6 +38,13 @@ public class Student {
         this.wxId = wxId;
         this.qq = qq;
         this.wxName = wxName;
+        this.wxAvatar = wxAvatar;
+    }
+
+    public Student(Long id,String wxAvatar,String wxName){
+        this.id = id;
+        this.wxAvatar =wxAvatar;
+        this.wxName =wxName;
     }
 
     @TableId(value = "id",type = IdType.AUTO)
@@ -85,6 +92,9 @@ public class Student {
 
     @TableField("qq")
     private String qq;
+
+    @TableField("wx_avatar")
+    private String wxAvatar;
 
 
 
