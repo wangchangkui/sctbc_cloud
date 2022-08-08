@@ -60,7 +60,8 @@ public class QrUtil {
 
     public <T> String updateQr(String token, T value) {
         try (Jedis jedis = redisPool.getConnection()) {
-            return jedis.set(RedisCommonKey.QR + token, value.toString());
+            RedisCommonKey.setValues(RedisCommonKey.QR + token, value.toString(), THREE_MINUTES, false, jedis);
+            return "success";
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());

@@ -60,11 +60,17 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Override
     public String verify() {
-        LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(100, 30,4,3);
-        lineCaptcha.setBackground(new Color(245,247,250));
-        Jedis jedis=redisPool.getConnection();
-        RedisCommonKey.setValues(RedisCommonKey.CAPTCHA+lineCaptcha.getCode(),lineCaptcha.getCode(),THREE_MINUTES,false,jedis);
-        return "data:image/png;base64,"+lineCaptcha.getImageBase64();
+        LineCaptcha lineCaptcha = CaptchaUtil.createLineCaptcha(100, 30, 4, 3);
+        lineCaptcha.setBackground(new Color(245, 247, 250));
+        try {
+            Jedis jedis = redisPool.getConnection();
+            RedisCommonKey.setValues(RedisCommonKey.CAPTCHA + lineCaptcha.getCode(), lineCaptcha.getCode(), THREE_MINUTES, false, jedis);
+            return "data:image/png;base64," + lineCaptcha.getImageBase64();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+
     }
 
     @Override
@@ -89,12 +95,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
 
     @Override
-    public QrCode createQr() {
-        LocalDateTime now =LocalDateTime.now();
+    public QrCode<String> createQr() {
+        LocalDateTime now = LocalDateTime.now();
         // 生成一个临时的token 然后放入redis 并生成验证码
         String times = now.format(DateTimeFormatter.ofPattern(DateUtil.yyyy_MM_dd_HH_mm_ss));
         String token = TokenUtil.getToken(times);
-        return new QrCode<String>(qrUtil.createQr(token), token, LocalDateTime.now().plusSeconds((long) THREE_MINUTES * 2));
+        return new QrCode<>(qrUtil.createQr(token), token, LocalDateTime.now().plusSeconds((long) THREE_MINUTES * 2));
     }
 
     @Override

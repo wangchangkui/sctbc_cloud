@@ -14,15 +14,19 @@ public class RedisCommonKey {
     /**
      * 1天过期
      */
-    public final static Integer EXPIRE_ONE_DAY = 60*60*24;
-    public final static Integer THREE_MINUTES = 60*3;
+    public final static Integer EXPIRE_ONE_DAY = 60 * 60 * 24;
+
+    /**
+     * 180 秒 3分
+     */
+    public final static Integer THREE_MINUTES = 60 * 3;
     public final static String USER_ = "user:";
 
     public final static String TOKEN_ = "token:";
 
     public final static String CAPTCHA = "captcha:";
 
-    public final static String QR= "qr:";
+    public final static String QR = "qr:";
 
 
     public static SetParams getAnyParam(int expire,boolean nx){
