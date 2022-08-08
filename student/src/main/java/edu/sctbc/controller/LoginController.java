@@ -4,7 +4,6 @@ import edu.sctbc.pojo.dto.StudentDto;
 import edu.sctbc.pojo.reqentity.QrCode;
 import edu.sctbc.pojo.reqentity.WxLoginEntity;
 import edu.sctbc.service.StudentService;
-import edu.sctbc.service.login.abstracts.impl.WxLogin;
 import edu.sctbc.util.QrUtil;
 import edu.sctbc.util.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
