@@ -30,7 +30,7 @@ public class QrUtil {
 
 
     public String createQr(String content){
-        RedisCommonKey.setValues(RedisCommonKey.QR+content,"1", THREE_MINUTES,false,redisPool.getConnection());
+        RedisCommonKey.setValues(RedisCommonKey.QR+content,"1", THREE_MINUTES*2,false,redisPool.getConnection());
         BufferedImage generate = QrCodeUtil.generate(content, 300, 300);
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()){
             ImageIO.write(generate,"png",byteArrayOutputStream);

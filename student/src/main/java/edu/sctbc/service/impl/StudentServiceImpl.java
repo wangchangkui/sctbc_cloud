@@ -2,8 +2,6 @@ package edu.sctbc.service.impl;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
-import cn.hutool.core.codec.Base64;
-import cn.hutool.extra.qrcode.QrCodeUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.sctbc.config.RsaKey;
@@ -11,6 +9,7 @@ import edu.sctbc.config.WxProperties;
 import edu.sctbc.dao.StudentMapper;
 import edu.sctbc.pojo.Student;
 import edu.sctbc.pojo.dto.StudentDto;
+import edu.sctbc.pojo.reqentity.QrCode;
 import edu.sctbc.pojo.reqentity.WxLoginEntity;
 import edu.sctbc.service.StudentService;
 import edu.sctbc.service.login.abstracts.impl.TextLogin;
@@ -18,20 +17,15 @@ import edu.sctbc.service.login.abstracts.impl.WxLogin;
 import edu.sctbc.util.DateUtil;
 import edu.sctbc.util.QrUtil;
 import edu.sctbc.util.redis.RedisCommonKey;
+import edu.sctbc.util.redis.RedisPool;
 import edu.sctbc.util.redis.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import edu.sctbc.util.redis.RedisPool;
 import redis.clients.jedis.Jedis;
 
-
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -95,12 +89,12 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
 
     @Override
-    public String createQr() {
+    public QrCode createQr() {
         LocalDateTime now =LocalDateTime.now();
         // 生成一个临时的token 然后放入redis 并生成验证码
         String times = now.format(DateTimeFormatter.ofPattern(DateUtil.yyyy_MM_dd_HH_mm_ss));
         String token = TokenUtil.getToken(times);
-        return qrUtil.createQr(token);
+        return new QrCode(qrUtil.createQr(token),token,LocalDateTime.now().plusSeconds((long) THREE_MINUTES * 2));
     }
 
     @Override

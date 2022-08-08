@@ -3,6 +3,7 @@ package edu.sctbc.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import edu.sctbc.pojo.Student;
 import edu.sctbc.pojo.dto.StudentDto;
+import edu.sctbc.pojo.reqentity.QrCode;
 import edu.sctbc.pojo.reqentity.WxLoginEntity;
 
 /**
@@ -17,7 +18,7 @@ public interface StudentService extends IService<Student> {
      * 生成一个登录二维码
      * @return 二维码图片
      */
-    String createQr();
+    QrCode createQr();
 
     /**
      * 检查验证码
