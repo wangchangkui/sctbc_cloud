@@ -47,11 +47,21 @@ public class QrUtil {
     public String getQrData(String qrToken){
         try(Jedis jedis =redisPool.getConnection()){
             String s = jedis.get(RedisCommonKey.QR + qrToken);
-            if(StringUtils.isEmpty(s)){
+            if (StringUtils.isEmpty(s)) {
                 throw new RuntimeException("该二维码已经失效");
             }
             return s;
-        }catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+
+    public <T> String updateQr(String token, T value) {
+        try (Jedis jedis = redisPool.getConnection()) {
+            return jedis.set(RedisCommonKey.QR + token, value.toString());
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }

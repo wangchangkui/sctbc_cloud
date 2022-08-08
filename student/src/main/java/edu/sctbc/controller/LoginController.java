@@ -25,13 +25,19 @@ public class LoginController {
     private StudentService studentService;
 
 
+    @PostMapping("/changeQrCode")
+    public ResponseResult<String> changeQrData(@RequestBody QrCode<String> code) {
+        return ResponseResult.success(qrUtil.updateQr(code.getTempToken(), code.getValue()));
+    }
+
     /**
      * 轮询获取验证码的内容
+     *
      * @param qr 二维码临时token
      * @return 内容
      */
     @GetMapping("/getQrContent/{qr}")
-    public ResponseResult<String> getQrContent(@PathVariable String qr){
+    public ResponseResult<String> getQrContent(@PathVariable String qr) {
         return ResponseResult.success(qrUtil.getQrData(qr));
     }
 

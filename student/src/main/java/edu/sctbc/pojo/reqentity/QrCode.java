@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QrCode {
+public class QrCode<T> {
     /**
      * 二维码图片
      */
@@ -31,4 +31,14 @@ public class QrCode {
      */
     private LocalDateTime expireTime;
 
+    /**
+     * 修改token的值
+     */
+    private T value;
+
+    public QrCode(String base64Image, String tempToken, LocalDateTime expireTime) {
+        this.base64Image = base64Image;
+        this.tempToken = tempToken;
+        this.expireTime = expireTime;
+    }
 }

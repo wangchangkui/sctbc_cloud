@@ -94,7 +94,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         // 生成一个临时的token 然后放入redis 并生成验证码
         String times = now.format(DateTimeFormatter.ofPattern(DateUtil.yyyy_MM_dd_HH_mm_ss));
         String token = TokenUtil.getToken(times);
-        return new QrCode(qrUtil.createQr(token),token,LocalDateTime.now().plusSeconds((long) THREE_MINUTES * 2));
+        return new QrCode<String>(qrUtil.createQr(token), token, LocalDateTime.now().plusSeconds((long) THREE_MINUTES * 2));
     }
 
     @Override
