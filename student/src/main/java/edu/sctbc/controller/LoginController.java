@@ -23,6 +23,11 @@ public class LoginController {
 
 
 
+    @GetMapping("/getQr")
+    public ResponseResult<String> createQr(){
+        return ResponseResult.success(studentService.createQr());
+    }
+
     @PostMapping("/wxLogin")
     public ResponseResult<StudentDto> getWxId(@RequestBody WxLoginEntity wxLogin){
         return ResponseResult.success(studentService.wxLogin(wxLogin));

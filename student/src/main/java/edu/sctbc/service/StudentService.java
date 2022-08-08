@@ -13,6 +13,11 @@ import edu.sctbc.pojo.reqentity.WxLoginEntity;
  */
 public interface StudentService extends IService<Student> {
 
+    /**
+     * 生成一个登录二维码
+     * @return 二维码图片
+     */
+    String createQr();
 
     /**
      * 检查验证码

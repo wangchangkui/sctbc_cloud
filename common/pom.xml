@@ -16,9 +16,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <fastjson>2.0.7</fastjson>
         <bcprov>1.71</bcprov>
+        <qr>3.5.0</qr>
     </properties>
 
     <dependencies>
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${qr}</version>
+        </dependency>
+
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>

@@ -22,6 +22,8 @@ public class RedisCommonKey {
 
     public final static String CAPTCHA = "captcha:";
 
+    public final static String QR= "qr:";
+
 
     public static SetParams getAnyParam(int expire,boolean nx){
         SetParams setParams = new SetParams();

@@ -2,6 +2,8 @@ package edu.sctbc.service.impl;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
+import cn.hutool.core.codec.Base64;
+import cn.hutool.extra.qrcode.QrCodeUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import edu.sctbc.config.RsaKey;
@@ -13,7 +15,10 @@ import edu.sctbc.pojo.reqentity.WxLoginEntity;
 import edu.sctbc.service.StudentService;
 import edu.sctbc.service.login.abstracts.impl.TextLogin;
 import edu.sctbc.service.login.abstracts.impl.WxLogin;
+import edu.sctbc.util.DateUtil;
+import edu.sctbc.util.QrUtil;
 import edu.sctbc.util.redis.RedisCommonKey;
+import edu.sctbc.util.redis.TokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +27,13 @@ import edu.sctbc.util.redis.RedisPool;
 import redis.clients.jedis.Jedis;
 
 
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static edu.sctbc.util.redis.RedisCommonKey.THREE_MINUTES;
 
@@ -49,6 +60,9 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
 
     @Autowired
     private WxProperties wxProperties;
+
+    @Autowired
+    private QrUtil qrUtil;
 
     @Override
     public String verify() {
@@ -79,6 +93,15 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         return login;
     }
 
+
+    @Override
+    public String createQr() {
+        LocalDateTime now =LocalDateTime.now();
+        // 生成一个临时的token 然后放入redis 并生成验证码
+        String times = now.format(DateTimeFormatter.ofPattern(DateUtil.yyyy_MM_dd_HH_mm_ss));
+        String token = TokenUtil.getToken(times);
+        return qrUtil.createQr(token);
+    }
 
     @Override
     public boolean checkCode(String code) {
