@@ -1,6 +1,7 @@
 package sctbc.service;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import sctbc.service.impl.StudentFeignImpl;
@@ -11,6 +12,7 @@ import sctbc.service.impl.StudentFeignImpl;
  * @Description
  * @createTime 2022年08月09日 16:18:00
  */
+@Component
 @FeignClient(name = "nacos-student", fallback = StudentFeignImpl.class)
 
 public interface StudentFeign {

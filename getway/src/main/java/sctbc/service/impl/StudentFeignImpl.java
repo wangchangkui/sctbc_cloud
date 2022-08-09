@@ -19,6 +19,6 @@ public class StudentFeignImpl implements StudentFeign {
         log.error("传入参数：" + value);
         log.error("服务不可用,nacos-student");
         log.error("请求地址：{}", "/redis/getValue/{value}");
-        throw new RuntimeException("没有可用的服务");
+        return "没有可用的服务";
     }
 }

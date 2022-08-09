@@ -28,20 +28,6 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
-    sentinel:
-      transport:
-        dashboard: localhost:8080
-        port: 8719
-      log:
-        dir: D:/logs/
-      datasource:
-        ds1:
-          nacos:
-            server-addr: localhost:8848
-            dataId: nacos-getaway
-            groupId: DEFAULT_GROUP
-            dataType: json
-            ruleType: flow
 feign:
   hystrix:
     enabled: true

@@ -11,6 +11,7 @@ import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
+import sctbc.util.CommonResultError;
 
 import java.util.HashMap;
 
@@ -44,7 +45,7 @@ public class ErrorController implements ErrorWebExceptionHandler {
             DataBufferFactory bufferFactory = response.bufferFactory();
             HashMap<String, Object> stringObjectHashMap = new HashMap<>(3);
             stringObjectHashMap.put("code", 400000);
-            stringObjectHashMap.put("message", ex.getMessage());
+            stringObjectHashMap.put("message", CommonResultError.transFromMessage(ex.getMessage()));
             try {
                 // 返回ErrorResult
                 return bufferFactory.wrap(objectMapper.writeValueAsBytes(stringObjectHashMap));
