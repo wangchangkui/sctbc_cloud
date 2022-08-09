@@ -1,5 +1,6 @@
 package edu.sctbc.util.redis;
 
+import com.alibaba.druid.util.StringUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.params.SetParams;
 
@@ -39,15 +40,30 @@ public class RedisCommonKey {
         }
         return setParams;
     }
-    public static void setValues(String key, String value, int expire, boolean nx, Jedis jedis){
-        try{
+
+    public static void setValues(String key, String value, int expire, boolean nx, Jedis jedis) {
+        try {
             SetParams anyParam = getAnyParam(expire, nx);
-            jedis.set(key,value,anyParam);
-        }catch (Exception e){
+            jedis.set(key, value, anyParam);
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             jedis.close();
         }
+    }
+
+
+    public static String getRedisValue(String key, Jedis jedis) {
+        String s = jedis.get(key);
+        if (StringUtils.isEmpty(s)) {
+            throw new RuntimeException("不存在的KEY");
+        }
+        try {
+            jedis.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return s;
     }
 
 

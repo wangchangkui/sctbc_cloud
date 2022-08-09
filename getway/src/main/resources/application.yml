@@ -1,10 +1,18 @@
 server:
   port: 9001
+  ssl:
+    client-auth:
 
+
+# 不允许被访问的地址:
 auth:
-  noAuthor:
-    - /login
+  noAccess:
 
+
+# 不需要传入Token的地址
+filter:
+  noAuthor:
+    - login
 spring:
   application:
     name: nacos-getaway
@@ -17,7 +25,35 @@ spring:
       discovery:
         locator:
           enabled: true
-
     nacos:
       discovery:
         server-addr: localhost:8848
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
+      log:
+        dir: D:/logs/
+      datasource:
+        ds1:
+          nacos:
+            server-addr: localhost:8848
+            dataId: nacos-getaway
+            groupId: DEFAULT_GROUP
+            dataType: json
+            ruleType: flow
+feign:
+  hystrix:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 8000
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 3000
+
+

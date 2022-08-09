@@ -15,3 +15,17 @@ spring:
         group: DEV_GROUP
         namespace: ea6b6195-9373-4594-8ee8-c3ed17bbb226
 
+    sentinel:
+      transport:
+        dashboard: localhost:8080
+        port: 8719
+      log:
+        dir: D:/logs/
+      datasource:
+        ds1:
+          nacos:
+            server-addr: localhost:8848
+            dataId: nacos-student
+            groupId: DEFAULT_GROUP
+            dataType: json
+            ruleType: flow
