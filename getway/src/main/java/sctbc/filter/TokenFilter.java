@@ -1,6 +1,9 @@
 package sctbc.filter;
 
+import edu.sctbc.util.redis.RedisCommonKey;
+import edu.sctbc.util.redis.RedisPool;
 import lombok.Data;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -10,10 +13,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
-import sctbc.service.StudentFeign;
+import redis.clients.jedis.Jedis;
 
 import java.util.List;
 
@@ -30,13 +32,10 @@ import java.util.List;
 public class TokenFilter implements GlobalFilter {
 
 
-    @Autowired
-    private RestTemplate restTemplate;
     private List<String> noAuthor;
 
-
     @Autowired
-    private StudentFeign studentFeign;
+    private RedisPool redisPool;
 
 
     @Override
@@ -55,8 +54,15 @@ public class TokenFilter implements GlobalFilter {
         }
         String token = header.get(0);
         // 验证token是否有效
-        String redisValue = studentFeign.getRedisValue(token);
-        System.out.println(redisValue);
-        return chain.filter(exchange);
+        try (Jedis jedis = redisPool.getConnection()) {
+            String s = jedis.get(RedisCommonKey.TOKEN_ + token);
+            if (StringUtils.isNotBlank(s)) {
+                return chain.filter(exchange);
+            }
+            throw new RuntimeException("无效Token！");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException(e.getMessage());
+        }
     }
 }

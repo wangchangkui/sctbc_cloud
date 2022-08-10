@@ -1,9 +1,5 @@
 server:
   port: 9001
-  ssl:
-    client-auth:
-
-
 # 不允许被访问的地址:
 auth:
   noAccess:
@@ -12,8 +8,10 @@ auth:
 # 不需要传入Token的地址
 filter:
   noAuthor:
-    - login
+    - /login
 spring:
+  profiles:
+    active: dev
   application:
     name: nacos-getaway
   cloud:
@@ -28,6 +26,12 @@ spring:
     nacos:
       discovery:
         server-addr: localhost:8848
+      config:
+        file-extension: yaml
+        # 配置文件的地址也需要指定
+        server-addr: localhost:8848
+        group: DEV_GROUP
+        namespace: ea6b6195-9373-4594-8ee8-c3ed17bbb226
 feign:
   hystrix:
     enabled: true

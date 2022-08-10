@@ -13,11 +13,16 @@ public enum CommonResultError {
     /**
      * 没有任何服务
      */
-    NO_CONNECTION_("Connection refused: no further information", "没有可用的服务"),
+    NO_CONNECTION_("Connection refused: no further information", "服务下线或者拒绝"),
     /**
      * 没有可用的服务器2
      */
-    NO_SERVICE("503 SERVICE_UNAVAILABLE", "没有可用的服务");
+    NO_SERVICE("503 SERVICE_UNAVAILABLE", "没有可用的服务"),
+    /**
+     * TIMEOUT_504 远程调用超时
+     */
+    TIMEOUT_504("504 GATEWAY_TIMEOUT", "服务请求超时");
+
 
     private String message;
     private String returnMessage;

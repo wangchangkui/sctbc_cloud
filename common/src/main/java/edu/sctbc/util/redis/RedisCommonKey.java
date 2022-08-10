@@ -54,14 +54,18 @@ public class RedisCommonKey {
 
 
     public static String getRedisValue(String key, Jedis jedis) {
-        String s = jedis.get(key);
+        String s;
+        // 加锁 并发请求超时
+        synchronized (RedisCommonKey.class) {
+            s = jedis.get(key);
+            try {
+                jedis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         if (StringUtils.isEmpty(s)) {
             throw new RuntimeException("不存在的KEY");
-        }
-        try {
-            jedis.close();
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return s;
     }
