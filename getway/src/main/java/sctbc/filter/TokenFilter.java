@@ -3,6 +3,7 @@ package sctbc.filter;
 import edu.sctbc.util.redis.RedisCommonKey;
 import edu.sctbc.util.redis.RedisPool;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -29,6 +30,7 @@ import java.util.List;
 @EnableConfigurationProperties
 @ConfigurationProperties("filter")
 @Component
+@Slf4j
 public class TokenFilter implements GlobalFilter {
 
 
@@ -61,7 +63,7 @@ public class TokenFilter implements GlobalFilter {
             }
             throw new RuntimeException("无效Token！");
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
     }
