@@ -70,5 +70,17 @@ public class RedisCommonKey {
         return s;
     }
 
+    public static String removeRedisValue(String key, Jedis jedis) {
+        synchronized (RedisCommonKey.class) {
+            jedis.del(key);
+            try {
+                jedis.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return key;
+    }
+
 
 }
