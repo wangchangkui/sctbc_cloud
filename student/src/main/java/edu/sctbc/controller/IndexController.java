@@ -1,5 +1,6 @@
 package edu.sctbc.controller;
 
+import edu.sctbc.util.ResponseResult;
 import edu.sctbc.util.redis.RedisCommonKey;
 import edu.sctbc.util.redis.RedisPool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,8 @@ public class IndexController {
 
 
     @GetMapping("/redis/getValue/{value}")
-    public String getRedisValue(@PathVariable String value) {
-        return RedisCommonKey.getRedisValue(RedisCommonKey.TOKEN_ + value, redisPool.getConnection());
+    public ResponseResult<String> getRedisValue(@PathVariable String value) {
+        return ResponseResult.success(RedisCommonKey.getRedisValue(RedisCommonKey.TOKEN_ + value, redisPool.getConnection()));
     }
 
 }

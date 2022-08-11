@@ -50,7 +50,7 @@ public class TokenFilter implements GlobalFilter {
         if (count > 0) {
             return chain.filter(exchange);
         }
-        List<String> header = headers.get("X-Token");
+        List<String> header = headers.get("Token");
         if (CollectionUtils.isEmpty(header)) {
             throw new RuntimeException("请传入认证头!");
         }
@@ -61,7 +61,7 @@ public class TokenFilter implements GlobalFilter {
             if (StringUtils.isNotBlank(s)) {
                 return chain.filter(exchange);
             }
-            throw new RuntimeException("无效Token！");
+            throw new RuntimeException("无效Token");
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e.getMessage());
