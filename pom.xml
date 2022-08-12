@@ -13,8 +13,9 @@
   <modules>
     <module>nacos</module>
     <module>common</module>
-    <module>getway</module>
+    <module>gateway</module>
     <module>student</module>
+    <module>teacher</module>
   </modules>
   <packaging>pom</packaging>
 

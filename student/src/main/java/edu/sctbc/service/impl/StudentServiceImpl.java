@@ -76,17 +76,20 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
     @Override
     public StudentDto wxLogin(WxLoginEntity entity) {
         // 远程调用微信服务器 获取openId
-        String wxIdFormRemote = WxLogin.getWxIdFormRemote(entity.getWxId(),wxProperties.getAppId(),wxProperties.getSecret(),wxProperties.getGrantType());
+        String wxIdFormRemote = WxLogin.getWxIdFormRemote(entity.getWxId(), wxProperties.getAppId(), wxProperties.getSecret(), wxProperties.getGrantType());
+        if (!StringUtils.isNotBlank(wxIdFormRemote)) {
+            throw new RuntimeException("过期的临时token，请求微信服务器失败");
+        }
         WxLogin wxLogin = new WxLogin(redisPool, studentMapper, wxIdFormRemote);
         StudentDto login = wxLogin.login();
         login.setWxId(wxIdFormRemote);
         login.setWxName(entity.getWxName());
         login.setWxAvatar(entity.getWxAvatar());
         // 更新微信头像
-        try{
+        try {
             log.info("更新用户头像已经微信信息");
-            studentMapper.update(login,new LambdaQueryWrapper<Student>().eq(Student::getId,login.getId()));
-        }catch (Exception e){
+            studentMapper.update(login, new LambdaQueryWrapper<Student>().eq(Student::getId, login.getId()));
+        } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException(e.getMessage());
         }

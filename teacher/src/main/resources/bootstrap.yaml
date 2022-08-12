@@ -1,0 +1,16 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: nacos-teacher
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr:
+      config:
+        file-extension: yaml
+        # 配置文件的地址也需要指定
+        server-addr:
+        group: DEV_GROUP
+        namespace: ea6b6195-9373-4594-8ee8-c3ed17bbb226
