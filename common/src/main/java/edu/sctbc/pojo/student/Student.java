@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import edu.sctbc.pojo.teacher.Teacher;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -97,8 +98,11 @@ public class Student {
     @TableField("wx_avatar")
     private String wxAvatar;
 
+    @TableField("teacher_id")
+    private String teacherId;
 
-
+    @TableField(exist = false)
+    private Teacher teacher;
 
 
 }

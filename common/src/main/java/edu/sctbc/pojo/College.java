@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import edu.sctbc.pojo.teacher.Teacher;
 import lombok.Data;
 
 /**
@@ -23,4 +24,7 @@ public class College {
 
     @TableField("teacher_id")
     private String teacherId;
+
+    @TableField(exist = false)
+    private Teacher teacher;
 }
