@@ -1,0 +1,49 @@
+server:
+  port: 9001
+# 不允许被访问的地址:
+auth:
+  noAccess:
+
+
+# 不需要传入Token的地址
+filter:
+  noAuthor:
+    - /login
+spring:
+  profiles:
+    active: dev
+  application:
+    name: nacos-getaway
+  cloud:
+    gateway:
+      httpclient:
+        # 如果5秒没有请求或者响应超过5秒
+        connect-timeout: 5000
+        response-timeout: 5000
+      discovery:
+        locator:
+          enabled: true
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+      config:
+        file-extension: yaml
+        # 配置文件的地址也需要指定
+        server-addr: localhost:8848
+        group: DEV_GROUP
+        namespace: ea6b6195-9373-4594-8ee8-c3ed17bbb226
+feign:
+  hystrix:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 8000
+ribbon:
+  ReadTimeout: 5000
+  ConnectTimeout: 3000
+
+
