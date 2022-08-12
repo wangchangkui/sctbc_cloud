@@ -1,8 +1,8 @@
 package edu.sctbc.controller;
 
-import edu.sctbc.pojo.dto.StudentDto;
-import edu.sctbc.pojo.reqentity.QrCode;
-import edu.sctbc.pojo.reqentity.WxLoginEntity;
+import edu.sctbc.pojo.student.dto.StudentDto;
+import edu.sctbc.pojo.student.reqentity.QrCode;
+import edu.sctbc.pojo.student.reqentity.WxLoginEntity;
 import edu.sctbc.service.StudentService;
 import edu.sctbc.util.QrUtil;
 import edu.sctbc.util.ResponseResult;
@@ -43,7 +43,7 @@ public class LoginController {
 
 
     @GetMapping("/getQr")
-    public ResponseResult<QrCode> createQr(){
+    public ResponseResult<QrCode<String>> createQr() {
         return ResponseResult.success(studentService.createQr());
     }
 

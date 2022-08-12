@@ -1,6 +1,6 @@
 package edu.sctbc.service.login;
 
-import edu.sctbc.pojo.dto.StudentDto;
+import edu.sctbc.pojo.student.dto.StudentDto;
 
 /**
  * @author wck

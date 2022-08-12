@@ -1,7 +1,7 @@
-package edu.sctbc.pojo.dto;
+package edu.sctbc.pojo.student.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import edu.sctbc.pojo.Student;
+import edu.sctbc.pojo.student.Student;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package edu.sctbc.pojo.reqentity;
+package edu.sctbc.pojo.student.reqentity;
 
 import lombok.Data;
 

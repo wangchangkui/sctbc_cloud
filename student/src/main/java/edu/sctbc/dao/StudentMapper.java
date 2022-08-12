@@ -1,7 +1,7 @@
 package edu.sctbc.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import edu.sctbc.pojo.Student;
+import edu.sctbc.pojo.student.Student;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

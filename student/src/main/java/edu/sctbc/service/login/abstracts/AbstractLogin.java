@@ -1,8 +1,8 @@
 package edu.sctbc.service.login.abstracts;
 
 import com.alibaba.fastjson.JSON;
-import edu.sctbc.pojo.Student;
-import edu.sctbc.pojo.dto.StudentDto;
+import edu.sctbc.pojo.student.Student;
+import edu.sctbc.pojo.student.dto.StudentDto;
 import edu.sctbc.service.login.LoginInterFace;
 import edu.sctbc.util.redis.RedisCommonKey;
 import edu.sctbc.util.redis.RedisPool;

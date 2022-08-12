@@ -4,7 +4,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import edu.sctbc.config.RsaKey;
 import edu.sctbc.dao.StudentMapper;
-import edu.sctbc.pojo.Student;
+import edu.sctbc.pojo.student.Student;
 import edu.sctbc.service.login.abstracts.AbstractLogin;
 import edu.sctbc.util.Encoder;
 import edu.sctbc.util.redis.RedisPool;

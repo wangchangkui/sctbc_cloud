@@ -1,16 +1,14 @@
 package edu.sctbc.service.login.abstracts.impl;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import edu.sctbc.dao.StudentMapper;
-import edu.sctbc.pojo.Student;
+import edu.sctbc.pojo.student.Student;
 import edu.sctbc.service.login.abstracts.AbstractLogin;
 import edu.sctbc.util.OkHttpUtils;
 import edu.sctbc.util.redis.RedisPool;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.OkHttpClient;
 
 /**
  * @author wck
